@@ -1,3 +1,5 @@
+
+
 /* Global Variables */
 const apiKey = 'e3cd0efbe94996baa6851bcae2015370';
 
@@ -29,9 +31,10 @@ const updateUI = async (data) => {
     
     try { 
         console.log(data)
-        document.getElementById('date').textContent = 'The timezone is GMT'+(data[data.length - 1].date)+':00';
-        document.getElementById('temp').textContent = 'The weather is '+ (Math.round(data[data.length - 1].temperature) + ' degrees');
-        document.getElementById('content').textContent = data[data.length - 1].feelings;
+        document.getElementById('date').innerHTML = `${data.name}, US`;
+        document.getElementById('description').innerHTML = `Feels like ${Math.round(data.feelsLike)}°F. ${data.mainDescription}. ${data.description}`
+        document.getElementById('temp').innerHTML = `The weather is ${Math.round(data.temperature)}°F`;
+        document.getElementById('content').innerHTML = data.feelings;
     }
     catch(error) {
         console.log('error', error);
@@ -44,8 +47,16 @@ const fetchApi = async(input, feel) => {
     
     try {
         const allData = await res.json();
+        console.log(allData)
         //SENDING THE DATA TO THE SERVER
-        postData('/api', {temperature:allData.main.temp, date:allData.timezone / 3600, feelings:feel});
+        postData('/api', {
+        temperature:allData.main.temp, 
+        name:allData.name, 
+        feelsLike:allData.main.feels_like,
+        mainDescription:allData.weather[0].main,
+        description:allData.weather[0].description,
+        feelings:feel
+    });
     }
     
     catch(error) {

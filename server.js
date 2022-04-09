@@ -1,5 +1,7 @@
 // Setup empty JS object to act as endpoint for all routes
-const projectData = [];
+let projectData = {
+    
+};
 
 
 
@@ -44,11 +46,14 @@ app.post('/api', (req, res) => {
     console.log('i got a request!');
     newEntry = {
         temperature: req.body.temperature,
-        date: req.body.date,
+        name: req.body.name,
+        feelsLike: req.body.feelsLike,
+        mainDescription: req.body.mainDescription,
+        description: req.body.description,
         feelings: req.body.feelings
       }
     
-    projectData.push(newEntry)
+    projectData = newEntry
     console.log(projectData)
 });
 
